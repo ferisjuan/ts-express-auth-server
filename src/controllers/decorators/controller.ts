@@ -3,6 +3,7 @@ import 'reflect-metadata'
 
 import { Methods } from './MethodsEnum'
 import { MetadataKeys } from './MetadataKeysEnum'
+import { bodyValidators } from '../../utils/bodyValidators'
 
 export function controller(routePrefix: string) {
 	return function (target: Function) {
@@ -20,8 +21,18 @@ export function controller(routePrefix: string) {
 				Reflect.getMetadata(MetadataKeys.middleware, target.prototype, key) ||
 				[]
 
+			const requiredBodyProps =
+				Reflect.getMetadata(MetadataKeys.validator, target.prototype, key) || []
+
+			const validator = bodyValidators(requiredBodyProps)
+
 			if (path) {
-				router[method](`${routePrefix}${path}`, ...middlewares, routeHandler)
+				router[method](
+					`${routePrefix}${path}`,
+					...middlewares,
+					validator,
+					routeHandler
+				)
 			}
 		}
 	}
