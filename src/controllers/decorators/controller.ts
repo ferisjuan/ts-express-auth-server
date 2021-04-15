@@ -1,7 +1,8 @@
 import { AppRouter } from '../../AppRouter'
 import 'reflect-metadata'
 
-import { Methods } from './Methods'
+import { Methods } from './MethodsEnum'
+import { MetadataKeys } from './MetadataKeysEnum'
 
 export function controller(routePrefix: string) {
 	return function (target: Function) {
@@ -9,7 +10,7 @@ export function controller(routePrefix: string) {
 
 		for (let key in target.prototype) {
 			const routeHandler = target.prototype[key]
-			const path = Reflect.getMetadata('path', target.prototype, key)
+			const path = Reflect.getMetadata(MetadataKeys.path, target.prototype, key)
 			const method: Methods = Reflect.getMetadata(
 				'method',
 				target.prototype,
