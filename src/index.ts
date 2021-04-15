@@ -5,6 +5,7 @@ import { router } from './routes/loginRoutes'
 import { AppRouter } from './AppRouter'
 
 import './controllers/LoginController'
+import './controllers/RootController'
 
 const app = express()
 
